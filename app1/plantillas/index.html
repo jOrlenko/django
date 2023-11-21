@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Vista index en Python</h1>
+    <h3>by {{nombre}}</h3>
+    <p>Inicialmente, es solo una vista estática</p>
+    <div>
+        <h2>Lenguajes conocidos</h2>
+        <ul>
+            {% if lenguaje %}
+                {% for dato in lenguaje %}
+                    <li>{{dato}}</li>
+                {% endfor %}
+            {% else %}
+                <p>No hay lenguajes aprendidos aún</p>
+            {% endif %}
+        </ul>
+    </div>
+</body>
+</html>
