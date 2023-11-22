@@ -1,0 +1,21 @@
+{% extends 'index.html' %}
+{% block title %} 
+Decoraciones 
+{% endblock %}
+
+{% block content %}
+<div>
+    <h2>Tipos de Decoraciones:</h2>
+    <ul>
+        {% if decorados %}
+            {% for dato in decorados %}
+                <li>{{dato}}</li>
+            {% endfor %}
+        {% else %}
+            <p>No hay decorados aplicables</p>
+        {% endif %}
+    </ul>
+
+    <p>... desde home.html ...</p>
+</div>
+{% endblock %}

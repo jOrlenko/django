@@ -54,7 +54,7 @@ ROOT_URLCONF = 'app1.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['/media/josue/data_linux/josue/Documentos/Curso_Django/app1/app1/plantillas/'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

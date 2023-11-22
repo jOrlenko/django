@@ -11,7 +11,7 @@ Primeramente es necesario inicializar el documento `manage.py` que se encuentra 
 ```
 python3 manage.py migrate
 ```
-Una vez que migró el manage.py debemos iniciar una base de datos, que es requisito para el funcionamiento de Django. Por defecto, Django, viene con `Qlite3` y debemos inicializarlo.
+Una vez que migró el manage.py debemos iniciar una base de datos, que es requisito para el funcionamiento de Django. Por defecto, Django, viene con `SQlite3` y debemos inicializarlo.
 
 Para poder visualizar nuestro proyecto inicializando un servidor privado ejecutamos:
 ```
@@ -58,7 +58,7 @@ Django al encontrarse con `elemento.algo` en una *plantilla* busca la funcion de
 
 Es por esto que en django, un método nunca irá con (), y metodos y atributos, etc todas se escriben igual.
 
-## Bucles 
+## 04 - Bucles 
 Debemos recordar que el funcionamiento de aperturas y cierres funciona igual que los tags de html. Por lo cual, si anidamos bucles, el cierre del primero debe estar despues del cierre del primero
 
 ### For
@@ -83,3 +83,86 @@ Funciona igual que el for. Permite la colocación de else.
     {% endif %}
 </div>
 ```
+
+## 05 - Filtros
+Podemos aplicar filtros. Incluso concatenarlos.
+Se aplican con "|" en la estructura de la platilla
+```
+nombre|first
+```
+Este filtro, por ejemplo, hace que solo se renderice la primer letra de la cadena nombre
+```
+nombre|first|lower
+```
+Ahora le estamos pidiendo que, ademas, lo ponga en minúscula
+Más info en <a href='https://django-filter.readthedocs.io/en/stable/' target=_blank>Documentacion oficial</a>
+
+## 06 - Cargadores de Plantillas - Loader
+Importante! 
+¿¿Porque usar *loader* si con open() funciona?? 
+Es simple, al usar open estamos sobrecargando el codigo, y haciendo que la app deba realizar muchas más operaciones de las que debería. Por lo tanto, la mejor forma de hacerlo es a través de un loader.
+
+### Configuración
+Debemos ingresar en el archivo `setting.py` y buscamos la parte de `TEMPLATES`. 
+Dentro veremos que `DIRS` tiene una lista vacía. Aquí debemos poner la ruta de acceso de la carpeta de los templates o plantillas. No se coloca un template directamente, porque el loader debe luego buscarlo.
+
+### Loader
+Una vez configurado, entramos en nuestra view e importamos el loader de `django.template`. 
+Ahora es muy simple, en una variable, asignaremos el template con `get_template` pasándolo como parámetro. 
+```
+from django.template import loader
+template = loader.get_template('index.html')
+
+from django.template.loader import get_template
+template = get_template('index.html')
+```
+De esta forma, el template se carga en un modo en el que Django comprende con mayor facilidad, por lo cual, ahora el context no es necesario. Y en su lugar sólo nos pide que le pasemos un diccionario. Esto es así porque si bien ambos son clase Template, son clases distintas para Django, por lo que el render funcionará diferente.
+```
+contexto = {'nombre':nombre, 'lenguaje':lenguajes}
+```
+**NO DEBEMOS USAR:**
+```
+contexto = context({'nombre':nombre, 'lenguaje':lenguajes})
+```
+
+## 07 - Render (shortcuts)
+Podemos importar:
+```
+from django.shortcuts import render
+```
+Este render nos permite hacer un renderizado más limpio.
+Requiere de dos parámetros obligatorios: request y template (que se lo pasamos directamente con el nombre del archivo html entre comillas); pero opcionalmente podemos asignarle un context como tercer parámetro pasándole directamente el diccionario
+```
+def laVista(request):
+    diccionario = {'clave':'valor'}
+    return render(request, 'index.html', diccionario)
+```
+
+## 08 - Plantillas Anidadas
+Normalmente, nuestra pagina web requerira de varios documentos web que la componen, tal como la barra de navegación, que se muestra en todo el sitio, etc.
+
+En el template index.html (o el que renderizará el template anidado), debemos llamar al template de la siguiente forma:
+```
+{% include 'anidado.html' %}
+```
+### Herencia de plantillas
+No es rentable estar anidando plantillas. Para el caso de necesitar una plantilla pero de contenido cambiante, es mejor tener una plantilla padre de la que se heredará como en las clases de Python.
+Se coloca en cada plantilla hija como primer etiqueta.
+```
+{% extends 'plantillaPadre.html' %}
+```
+
+## 09 - Bases de Datos
+Por defecto, Django trabaja con SQLite3, por lo cual es muy facil trabajarlo. Pero eso no implica que no se puedan manejar otras bases de datos.
+
+#### Diferencia en Django entre 'Proyecto' y 'Aplicacion'
+Un Proyecto es con lo que estamos trabajando ahora. Una aplicacion está contenida en un proyecto.
+Es posible que, de acuerdo al proyecto, pueda tener más de una aplicacion o ninguna.
+
+**Una aplicacion es como un paquete o módulo que hace una tarea concreta.** o una suma de tareas concretas.
+Cuantas apps necesitaré? 1, 4, 8? Depende de la complejidad del proyecto y las funcionalidades que necesitemos
+
+La gran ventaja es la modularizacion, y por ende, la reutilizacion de las apps de un proyecto a otro.
+
+### Cómo se crea una Base de Datos SQLite3?
+Django la crea automaticamente, usando la clase Model

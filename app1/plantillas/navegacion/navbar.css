@@ -1,0 +1,13 @@
+#barra {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-transform: capitalize;
+    background-color: #22244a;
+}
+
+#barra li {
+    display: inline;
+    align-items: center;
+    justify-content: space-between;
+}

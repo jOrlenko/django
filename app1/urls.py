@@ -17,9 +17,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from app1.views import saludar, edad_futura
+from app1.conrender import conrender
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('saludar/', saludar),
+    path('conrender/', conrender),
     path('edad/<int:anio>', edad_futura),
 ]
